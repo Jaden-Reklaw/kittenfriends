@@ -5,7 +5,7 @@ import CardItem from './CardItem';
 
 const CardList = ({robots}) => {
     return (
-        <div>
+        <div className='container'>
             {robots.map((user, index) => 
                 <CardItem
                     key={robots[index].id} 
