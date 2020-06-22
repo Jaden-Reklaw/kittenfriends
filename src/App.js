@@ -1,29 +1,18 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
 
-//import components to be used on this page
-import Hello from './Hello';
+//Import components to be used on this page
+import {robots} from './robots';
+import CardList from './CardList';
+
+// import bootstrap and APP.css file
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 class App extends Component {
+  // Renders the entire app on the DOM
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-        <Hello greeting={'Hello React Ninja!'}/>
+      <div>
+        <CardList robots={robots}/>
       </div>
     );
   }
