@@ -20,3 +20,11 @@
 .card:hover {
 	transform: scale(1.05);
 }
+
+input {
+  margin: 12px;
+}
+
+input[type=search]:focus {
+  background-color: lightblue;
+}

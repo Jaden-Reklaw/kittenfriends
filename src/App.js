@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
 //Import components to be used on this page
-import {robots} from './robots';
 import CardList from './CardList';
 import SearchBox from './SearchBox';
+import Scroll from './Scroll';
 
 //Connect to the redux store
 import { connect } from 'react-redux';
@@ -42,8 +42,9 @@ class App extends Component {
       <div className='text-center'>
         <h1 className="header-title">Kitten Friends</h1>
         <SearchBox searchChange={this.onSearchChange}/>
-        <hr />
-        <CardList robots={filteredRobots}/>
+        <Scroll>
+          <CardList robots={filteredRobots}/>
+        </Scroll>
       </div>
     );
   }
