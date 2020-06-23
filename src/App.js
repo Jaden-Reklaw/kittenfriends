@@ -5,14 +5,27 @@ import {robots} from './robots';
 import CardList from './CardList';
 import SearchBox from './SearchBox';
 
+//Connect to the redux store
+import { connect } from 'react-redux';
+
 // import bootstrap and APP.css file
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css'
 
 class App extends Component {
     state = {
-        robots: robots,
+        robots: [],
         searchField: ''
+    }
+
+    componentDidMount() {
+      this.props.dispatch({type: 'FETCH_KITTENS'});
+    }
+
+    componentDidUpdate(prevProps) {
+      if(this.props.kittens.length !== prevProps.kittens.length){
+        this.setState({robots: this.props.kittens});
+      }
     }
 
     onSearchChange = (event) => {
@@ -24,6 +37,7 @@ class App extends Component {
     const filteredRobots = this.state.robots.filter((robot) => {
       return robot.name.toLowerCase().includes(this.state.searchField.toLowerCase())
     });
+    console.log('kittens is', this.state.kittens);
     return (
       <div className='text-center'>
         <h1 className="header-title">Kitten Friends</h1>
@@ -35,4 +49,9 @@ class App extends Component {
   }
 }
 
-export default App;
+//Get redux store
+const mapStateToProps = reduxState => ({
+  kittens: reduxState.kittens
+});
+
+export default connect(mapStateToProps)(App);

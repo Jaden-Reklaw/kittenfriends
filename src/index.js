@@ -2,11 +2,67 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+//Used to create redux state and a store
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+//Provider allows us to use redux within our react app
+import { Provider } from 'react-redux';
+
+//Used to for logging state in redux when it changes
+import logger from 'redux-logger';
+
+//Import saga middleware
+import createSagaMiddleware from 'redux-saga';
+import {takeEvery, put} from 'redux-saga/effects';
+
+//Bring in Axios into the project
+import axios from 'axios';
+
+//Create the rootSaga generator function
+function* rootSaga() {
+    yield takeEvery('FETCH_KITTENS', fetchKittensSaga);
+}
+
+//Create sagaMiddleware
+const sagaMiddleware = createSagaMiddleware();
+
+//Used to store movies returned from the server
+const kittens = (state = [], action) => {
+    switch (action.type) {
+        case 'SET_KITTENS':
+            return action.payload;
+        default:
+            return state;
+    }
+}
+
+//Create Generator Funcitons for sagas
+//Generator function that uses saga to ajax get request
+function* fetchKittensSaga ( action ){
+    console.log('In fetchKittensSaga');
+    try {
+        //Making asyn AJAX (axios) request
+        const response = yield axios.get('/api/kittens');
+        //Once that is back successfully, dispatch action to the reducer
+        console.log('response ',response.data);
+        yield put({ type: 'SET_KITTENS', payload: response.data});
+    } catch(error) {
+        console.log('error with kittens get request', error);
+    }
+}
+
+// Create one store that all components can use
+const storeInstance = createStore(
+    combineReducers({
+        kittens,
+    }),
+    // Add sagaMiddleware to our store
+    applyMiddleware(sagaMiddleware, logger),
+);
+
+// Pass rootSaga into our sagaMiddleware
+sagaMiddleware.run(rootSaga);
+
+ReactDOM.render(<Provider store={storeInstance}><App /></Provider>, 
+    document.getElementById('root'));
