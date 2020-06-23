@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
 //Import components to be used on this page
-import CardList from './CardList';
-import SearchBox from './SearchBox';
-import Scroll from './Scroll';
+import CardList from '../components/CardList';
+import SearchBox from '../components/SearchBox';
+import Scroll from '../components/Scroll';
 
 //Connect to the redux store
 import { connect } from 'react-redux';
@@ -14,7 +14,7 @@ import './App.css'
 
 class App extends Component {
     state = {
-        robots: [],
+        kittens: [],
         searchField: ''
     }
 
@@ -24,7 +24,7 @@ class App extends Component {
 
     componentDidUpdate(prevProps) {
       if(this.props.kittens.length !== prevProps.kittens.length){
-        this.setState({robots: this.props.kittens});
+        this.setState({kittens: this.props.kittens});
       }
     }
 
@@ -34,19 +34,21 @@ class App extends Component {
 
   // Renders the entire app on the DOM
   render() {
-    const filteredRobots = this.state.robots.filter((robot) => {
-      return robot.name.toLowerCase().includes(this.state.searchField.toLowerCase())
+    const {kittens, searchField} = this.state;
+    const filteredKittens = kittens.filter((kitten) => {
+      return kitten.name.toLowerCase().includes(searchField.toLowerCase())
     });
-    console.log('kittens is', this.state.kittens);
-    return (
+    return !kittens.length ? <h1>Loading...</h1> :
+    (
       <div className='text-center'>
         <h1 className="header-title">Kitten Friends</h1>
         <SearchBox searchChange={this.onSearchChange}/>
         <Scroll>
-          <CardList robots={filteredRobots}/>
+          <CardList kittens={filteredKittens}/>
         </Scroll>
       </div>
     );
+    
   }
 }
 
