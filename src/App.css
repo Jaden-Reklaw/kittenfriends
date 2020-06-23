@@ -2,3 +2,21 @@
   display: flex;
   flex-wrap: wrap;
 }
+
+@font-face {
+  font-family: '';
+  font-style: normal;
+  font-weight: normal;
+  src:local('FINAL FANTASY'), url('eurostile.TTF') format('TTF');
+}
+
+.header-title {
+  font-family: 'FINAL FANTASY';
+  font-weight: 800;
+  color: white;
+  text-shadow: 2px 2px 4px #020202;
+}
+
+.card:hover {
+	transform: scale(1.05);
+}
