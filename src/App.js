@@ -7,6 +7,7 @@ import SearchBox from './SearchBox';
 
 // import bootstrap and APP.css file
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.css'
 
 class App extends Component {
     state = {
@@ -22,7 +23,7 @@ class App extends Component {
   render() {
     return (
       <div className='text-center'>
-        <h1>RoboFriends</h1>
+        <h1>Kitten Friends</h1>
         <SearchBox searchChange={this.onSearchChange}/>
         <hr />
         <CardList robots={this.state.robots}/>

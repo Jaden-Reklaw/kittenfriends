@@ -6,15 +6,17 @@ import CardItem from './CardItem';
 const CardList = ({robots}) => {
     return (
         <div className='container'>
-            {robots.map((user, index) => 
-                <CardItem
-                    key={robots[index].id} 
-                    id={robots[index].id}
-                    name={robots[index].name}
-                    email={robots[index].email}
-                />
-                )
-            }
+            <center>
+                {robots.map((user, index) => 
+                    <CardItem
+                        key={robots[index].id} 
+                        id={robots[index].id}
+                        name={robots[index].name}
+                        email={robots[index].email}
+                    />
+                    )
+                }
+            </center>
         </div>
     );
 }
