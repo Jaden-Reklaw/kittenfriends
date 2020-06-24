@@ -4,6 +4,8 @@ import React, { Component } from 'react';
 import CardList from '../components/CardList';
 import SearchBox from '../components/SearchBox';
 import Scroll from '../components/Scroll';
+import ErrorBoundry from '../components/ErrorBoundry';
+
 
 //Connect to the redux store
 import { connect } from 'react-redux';
@@ -44,7 +46,9 @@ class App extends Component {
         <h1 className="header-title">Kitten Friends</h1>
         <SearchBox searchChange={this.onSearchChange}/>
         <Scroll>
-          <CardList kittens={filteredKittens}/>
+          <ErrorBoundry>
+            <CardList kittens={filteredKittens}/>
+          </ErrorBoundry>
         </Scroll>
       </div>
     );

@@ -40,12 +40,10 @@ const kittens = (state = [], action) => {
 //Create Generator Funcitons for sagas
 //Generator function that uses saga to ajax get request
 function* fetchKittensSaga ( action ){
-    console.log('In fetchKittensSaga');
     try {
         //Making asyn AJAX (axios) request
         const response = yield axios.get('/api/kittens');
         //Once that is back successfully, dispatch action to the reducer
-        console.log('response ',response.data);
         yield put({ type: 'SET_KITTENS', payload: response.data});
     } catch(error) {
         console.log('error with kittens get request', error);
