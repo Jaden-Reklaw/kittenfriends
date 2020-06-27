@@ -5,6 +5,8 @@ import CardList from '../components/CardList';
 import SearchBox from '../components/SearchBox';
 import Scroll from '../components/Scroll';
 import ErrorBoundry from '../components/ErrorBoundry';
+import Button from 'react-bootstrap/Button';
+import AddKittenModal from './AddKittenModal';
 
 
 //Connect to the redux store
@@ -17,7 +19,8 @@ import './App.css'
 class App extends Component {
     state = {
         kittens: [],
-        searchField: ''
+        searchField: '',
+        modalShow: false,
     }
 
     componentDidMount() {
@@ -34,6 +37,10 @@ class App extends Component {
         this.setState({searchField: event.target.value});
     }
 
+    setModalShow = (bool) => {
+      this.setState({modalShow: bool});
+    }
+
   // Renders the entire app on the DOM
   render() {
     const {kittens, searchField} = this.state;
@@ -44,6 +51,17 @@ class App extends Component {
     (
       <div className='text-center'>
         <h1 className="header-title">Kitten Friends</h1>
+        <Button 
+          className="modal-btn" 
+          variant="primary" 
+          onClick={() => this.setModalShow(true)}
+        >
+          Create Kitten Friend
+        </Button>
+        <AddKittenModal
+          show={this.state.modalShow}
+          onHide={() => this.setModalShow(false)}
+        />
         <SearchBox searchChange={this.onSearchChange}/>
         <Scroll>
           <ErrorBoundry>
