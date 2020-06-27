@@ -19,9 +19,11 @@ import {takeEvery, put} from 'redux-saga/effects';
 //Bring in Axios into the project
 import axios from 'axios';
 
+
 //Create the rootSaga generator function
 function* rootSaga() {
     yield takeEvery('FETCH_KITTENS', fetchKittensSaga);
+    yield takeEvery('DELETE_KITTEN', deleteKittensSaga);
 }
 
 //Create sagaMiddleware
@@ -42,11 +44,23 @@ const kittens = (state = [], action) => {
 function* fetchKittensSaga ( action ){
     try {
         //Making asyn AJAX (axios) request
-        const response = yield axios.get('/api/kittens');
+        const response = yield axios.get('/api/kittens/get');
         //Once that is back successfully, dispatch action to the reducer
         yield put({ type: 'SET_KITTENS', payload: response.data});
     } catch(error) {
         console.log('error with kittens get request', error);
+    }
+}
+
+function* deleteKittensSaga ( action ){
+    console.log('deleteKittenSaga id is', action.payload.id);
+    try {
+        //Making asyn AJAX (axios) request
+        yield axios.delete(`/api/kittens/delete/${action.payload.id}`);
+        //Redo the get saga to see changes after delete
+        yield put({type: 'FETCH_KITTENS'});
+    } catch(error) {
+        console.log('error with kittens delete request', error);
     }
 }
 

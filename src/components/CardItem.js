@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 //Import Bootstrap components
 import Card from 'react-bootstrap/Card';
@@ -17,10 +18,11 @@ class CardItem extends Component {
 
     handleDelete = () => {
         console.log('handleDelete pressed!');
+        this.props.dispatch({type: 'DELETE_KITTEN', payload: {id: this.props.id}});
     }
 
     handleEdit = () => {
-        console.log('handleEdit pressed!');
+        console.log('handleEdit pressed!', this.props.id);
     }
 
     render() {
@@ -57,4 +59,4 @@ class CardItem extends Component {
     }
 }
 
-export default CardItem;
+export default connect()(CardItem);
