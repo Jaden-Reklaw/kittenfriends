@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 //Import Bootstrap components
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
 class CardItem extends Component {
     //Create state to change individual cards after they click edit
@@ -21,9 +22,23 @@ class CardItem extends Component {
         this.props.dispatch({type: 'DELETE_KITTEN', payload: {id: this.props.id}});
     }
 
+    //Event for clicking on the edit button
+    //Should change the state isEdit to true to render all the other card
     handleEdit = () => {
-        console.log('handleEdit pressed!', this.props.id);
+        this.setState({isEdit: true});
     }
+
+    handleUpdate = () => {
+        console.log('handleUpdate pressed!', this.props.id);
+        this.setState({isEdit: false});
+    }
+
+      //Handle changes to the fields and stores them into state before submitting
+  handleChangeFor = (event, propertyName) => {
+    this.setState({
+        newData: {...this.state.newData,[propertyName]: event.target.value,}
+      });
+  }
 
     render() {
         const {id, name, email} = this.props;
@@ -59,7 +74,40 @@ class CardItem extends Component {
                 </Card>
             );
         } else {
-            
+            return (
+                <Card 
+                    style={{ width: '18rem', display:'inline-block', margin:'12px'}} 
+                    className="text-center shadow p-3 mb-5 bg-white rounded"
+                >
+                    <Card.Img variant="top" src={`https://robohash.org/${id}?set=set4`} />
+                    <Card.Body>
+                    <Form>
+                        {/* Name Field */}
+                        <Form.Group controlId="formBasicName">
+                        <Form.Control
+                            type="text"
+                            value={this.state.newData.name}
+                            onChange={(event) => this.handleChangeFor(event,'name')} />
+                        </Form.Group>
+                        {/* Email Field */}
+                        <Form.Group controlId="formBasicEmail">
+                        <Form.Control
+                            type="text"
+                            value={this.state.newData.email}
+                            onChange={(event) => this.handleChangeFor(event, 'email')} />
+                        </Form.Group>
+                    </Form> 
+    
+                        {/* Edit Button */}
+                        <Button 
+                            variant="success" 
+                            block="true"
+                            type="submit"
+                            onClick={this.handleUpdate}
+                        >Update</Button>
+                    </Card.Body>
+                </Card>
+            );
         }  
     }
 }
