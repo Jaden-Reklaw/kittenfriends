@@ -23,6 +23,7 @@ import axios from 'axios';
 //Create the rootSaga generator function
 function* rootSaga() {
     yield takeEvery('FETCH_KITTENS', fetchKittensSaga);
+    yield takeEvery('ADD_KITTEN', addKittensSaga);
     yield takeEvery('DELETE_KITTEN', deleteKittensSaga);
 }
 
@@ -43,7 +44,7 @@ const kittens = (state = [], action) => {
 //Generator function that uses saga to ajax get request
 function* fetchKittensSaga ( action ){
     try {
-        //Making asyn AJAX (axios) request
+        //Making async AJAX (axios) request
         const response = yield axios.get('/api/kittens/get');
         //Once that is back successfully, dispatch action to the reducer
         yield put({ type: 'SET_KITTENS', payload: response.data});
@@ -52,10 +53,24 @@ function* fetchKittensSaga ( action ){
     }
 }
 
+//Saga for adding a kitten to the database
+function* addKittensSaga ( action ){
+    console.log('addKittenSaga', action.payload);
+    try {
+        //Making async AJAX (axios) request
+        yield axios.post(`/api/kittens/add`);
+        //Redo the get saga to see changes after post
+        yield put({type: 'FETCH_KITTENS'});
+    } catch(error) {
+        console.log('error with kittens delete request', error);
+    }
+}
+
+//Saga for removing a kitten from the database
 function* deleteKittensSaga ( action ){
     console.log('deleteKittenSaga id is', action.payload.id);
     try {
-        //Making asyn AJAX (axios) request
+        //Making async AJAX (axios) request
         yield axios.delete(`/api/kittens/delete/${action.payload.id}`);
         //Redo the get saga to see changes after delete
         yield put({type: 'FETCH_KITTENS'});
