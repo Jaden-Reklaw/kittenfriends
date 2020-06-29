@@ -8,14 +8,33 @@ router.get('/get', (req, res) => {
     // returns all kittens
     const queryText = `SELECT * FROM  kittens ORDER BY name`;
     pool.query(queryText)
-        .then( (result) => {
-            res.send(result.rows);
-        })
-        .catch( (error) => {
-            console.log(`Error on query ${error}`);
-            res.sendStatus(500);
-        });
+    .then( (result) => {
+        res.send(result.rows);
+    })
+    .catch( (error) => {
+        console.log(`Error on query ${error}`);
+        res.sendStatus(500);
+    });
 });
+
+//Route for adding a kitten to the database
+router.post('/add', (req, res) => {
+    const name = req.body.name;
+    const email = req.body.email;
+
+    const queryText = 
+                    `
+                        INSERT INTO "kittens" ("name", "email")
+                        VALUES($1, $2);
+                    `;
+    pool.query(queryText,[name, email])
+    .then((result) => {
+        res.sendStatus(202);
+    }).catch( (error) => {
+        console.log(`Error on query ${error}`);
+        res.sendStatus(500);
+    });
+})
 
 //Route for deleting kitten from database
 router.delete('/delete/:id',(req, res) => {
@@ -23,12 +42,13 @@ router.delete('/delete/:id',(req, res) => {
     console.log('deleting kitten with id ', kitten_id);
 
     const queryText = `DELETE FROM kittens WHERE id = $1;`;
-    pool.query(queryText,[kitten_id]).then((result) => {
-            res.sendStatus(202);
-        }).catch( (error) => {
-            console.log(`Error on query ${error}`);
-            res.sendStatus(500);
-        });
+    pool.query(queryText,[kitten_id])
+    .then((result) => {
+        res.sendStatus(202);
+    }).catch( (error) => {
+        console.log(`Error on query ${error}`);
+        res.sendStatus(500);
+    });
 })
 
 module.exports = router;

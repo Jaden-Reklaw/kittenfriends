@@ -55,10 +55,10 @@ function* fetchKittensSaga ( action ){
 
 //Saga for adding a kitten to the database
 function* addKittensSaga ( action ){
-    console.log('addKittenSaga', action.payload);
+    console.log('addKittenSaga', action.payload.newKitten);
     try {
         //Making async AJAX (axios) request
-        yield axios.post(`/api/kittens/add`);
+        yield axios.post(`/api/kittens/add`, action.payload.newKitten);
         //Redo the get saga to see changes after post
         yield put({type: 'FETCH_KITTENS'});
     } catch(error) {
