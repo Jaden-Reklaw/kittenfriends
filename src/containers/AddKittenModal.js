@@ -7,6 +7,27 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
 class AddKittenModal extends Component {
+  state = {
+    newKitten: {
+      name: '',
+      email: '',
+    }
+  }
+
+  //Handle changes to the fields and stores them into state before submitting
+  handleChangeFor = (event, propertyName) => {
+    this.setState({
+        newKitten: {...this.state.newKitten,[propertyName]: event.target.value,}
+      });
+  }
+
+  //Submits the form to be added to the database
+  handleSubmit = () => {
+    //Sends a dispatch to post a new ktten.
+    this.props.dispatch({type: 'ADD_KITTEN', payload: {newKitten: this.state.newKitten}});
+    //Close Modal after submit
+    this.props.onHide();
+  }
 
   render() {
     return (
@@ -29,6 +50,7 @@ class AddKittenModal extends Component {
               <Form.Control
                 type="text"
                 placeholder="Enter Kitten Name"
+                onChange={(event) => this.handleChangeFor(event, 'name')}
               />
             </Form.Group>
             <Form.Group controlId="formBasicEmail">
@@ -36,6 +58,7 @@ class AddKittenModal extends Component {
               <Form.Control
                 type="email"
                 placeholder="Enter Kitten Email"
+                onChange={(event) => this.handleChangeFor(event, 'email')}
               />
             </Form.Group>
           </Form>
