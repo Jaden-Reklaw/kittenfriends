@@ -3,6 +3,11 @@ const pool = require('../modules/pool');
 
 const router = express.Router();
 
+//Status codes for modifying the database
+const CREATED = 201;
+const ACCEPTED = 202;
+const INTERNAL_SERVER_ERROR = 500;
+
 //Route for getting kittens from database
 router.get('/get', (req, res) => {
     // returns all kittens
@@ -13,7 +18,7 @@ router.get('/get', (req, res) => {
     })
     .catch( (error) => {
         console.log(`Error on query ${error}`);
-        res.sendStatus(500);
+        res.sendStatus(INTERNAL_SERVER_ERROR);
     });
 });
 
@@ -28,11 +33,11 @@ router.post('/add', (req, res) => {
                         VALUES($1, $2);
                     `;
     pool.query(queryText,[name, email])
-    .then((result) => {
-        res.sendStatus(202);
+    .then(() => {
+        res.sendStatus(CREATED);
     }).catch( (error) => {
         console.log(`Error on query ${error}`);
-        res.sendStatus(500);
+        res.sendStatus(INTERNAL_SERVER_ERROR);
     });
 })
 
@@ -43,11 +48,11 @@ router.delete('/delete/:id',(req, res) => {
 
     const queryText = `DELETE FROM kittens WHERE id = $1;`;
     pool.query(queryText,[kitten_id])
-    .then((result) => {
-        res.sendStatus(202);
+    .then(() => {
+        res.sendStatus(ACCEPTED);
     }).catch( (error) => {
         console.log(`Error on query ${error}`);
-        res.sendStatus(500);
+        res.sendStatus(INTERNAL_SERVER_ERROR);
     });
 })
 
