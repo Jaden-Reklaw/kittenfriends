@@ -30,6 +30,8 @@ class App extends Component {
     componentDidUpdate(prevProps) {
       if(this.props.kittens.length !== prevProps.kittens.length){
         this.setState({kittens: this.props.kittens});
+      } else if(JSON.stringify(this.props.kittens) !== JSON.stringify(prevProps.kittens)) {
+        this.setState({kittens: this.props.kittens});
       }
     }
 
