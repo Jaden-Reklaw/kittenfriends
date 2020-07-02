@@ -29,6 +29,7 @@ class CardItem extends Component {
     }
 
     handleUpdate = () => {
+        this.props.dispatch({type: 'UPDATE_KITTEN_INFO', payload: {id: this.props.id, newData: {name: this.state.newData.name, email: this.state.newData.email}}});
         console.log('handleUpdate pressed!', this.props.id);
         this.setState({isEdit: false});
     }

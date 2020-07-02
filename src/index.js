@@ -24,7 +24,8 @@ import axios from 'axios';
 function* rootSaga() {
     yield takeEvery('FETCH_KITTENS', fetchKittensSaga);
     yield takeEvery('ADD_KITTEN', addKittensSaga);
-    yield takeEvery('DELETE_KITTEN', deleteKittensSaga);
+    yield takeEvery('DELETE_KITTEN', deleteKittenSaga);
+    yield takeEvery('UPDATE_KITTEN_INFO', updateKittenSaga);
 }
 
 //Create sagaMiddleware
@@ -67,7 +68,7 @@ function* addKittensSaga ( action ){
 }
 
 //Saga for removing a kitten from the database
-function* deleteKittensSaga ( action ){
+function* deleteKittenSaga ( action ){
     console.log('deleteKittenSaga id is', action.payload.id);
     try {
         //Making async AJAX (axios) request
@@ -76,6 +77,19 @@ function* deleteKittensSaga ( action ){
         yield put({type: 'FETCH_KITTENS'});
     } catch(error) {
         console.log('error with kittens delete request', error);
+    }
+}
+
+//Saga for updating a kitten's info on the database
+function* updateKittenSaga ( action ){
+    console.log('updateKittenSaga id is', action.payload);
+    try {
+        //Making async AJAX (axios) request
+        yield axios.put(`/api/kittens/update/${action.payload.id}`, action.payload.newData);
+        //Redo the get saga to see changes after delete
+        yield put({type: 'FETCH_KITTENS'});
+    } catch(error) {
+        console.log('error with kittens update request', error);
     }
 }
 

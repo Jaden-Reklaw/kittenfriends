@@ -39,7 +39,7 @@ router.post('/add', (req, res) => {
         console.log(`Error on query ${error}`);
         res.sendStatus(INTERNAL_SERVER_ERROR);
     });
-})
+});
 
 //Route for deleting kitten from database
 router.delete('/delete/:id',(req, res) => {
@@ -54,6 +54,25 @@ router.delete('/delete/:id',(req, res) => {
         console.log(`Error on query ${error}`);
         res.sendStatus(INTERNAL_SERVER_ERROR);
     });
-})
+});
+
+router.put('/update/:id', (req, res) => {
+    const kitten_id = req.params.id;
+    const kitten_name = req.body.name;
+    const kitten_email = req.body.email;
+
+    const queryText = `
+                        UPDATE "kittens"
+                        SET "name" = $1, "email" = $2
+                        WHERE "id" = $3;
+                      `;
+    pool.query(queryText,[kitten_name, kitten_email, kitten_id])
+    .then(() => {
+        res.sendStatus(ACCEPTED);
+    }).catch( (error) => {
+        console.log(`Error on query ${error}`);
+        res.sendStatus(INTERNAL_SERVER_ERROR);
+    });
+});
 
 module.exports = router;
