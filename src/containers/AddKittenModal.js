@@ -6,6 +6,8 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
+import Swal from 'sweetalert2';
+
 class AddKittenModal extends Component {
   state = {
     newKitten: {
@@ -27,6 +29,13 @@ class AddKittenModal extends Component {
     this.props.dispatch({type: 'ADD_KITTEN', payload: {newKitten: this.state.newKitten}});
     //Close Modal after submit
     this.props.onHide();
+    Swal.fire({
+      position: 'middle-end',
+      icon: 'success',
+      title: `Success! You have added ${this.state.newKitten.name}`,
+      showConfirmButton: false,
+      timer: 3000  //3seconds
+    });
   }
 
   render() {
