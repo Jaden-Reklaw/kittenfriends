@@ -6,9 +6,10 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
+import Swal from 'sweetalert2';
+
 class CardItem extends Component {
     //Create state to change individual cards after they click edit
-
     state = {
         isEdit: false,
         newData: {
@@ -17,29 +18,46 @@ class CardItem extends Component {
         }
     }
 
+    //method for handling the event when the delete button is pushed
     handleDelete = () => {
-        console.log('handleDelete pressed!');
-        this.props.dispatch({type: 'DELETE_KITTEN', payload: {id: this.props.id}});
+        Swal.fire({
+            title: 'Are you sure you wanna delete this kitten?',
+            text: "You won't be able to undo this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.value) {
+                this.props.dispatch({type: 'DELETE_KITTEN', payload: {id: this.props.id}});
+                Swal.fire({
+                    text: `${this.state.newData.name} Deleted!`,
+                    icon: 'error',
+                })
+            }
+        })
     }
 
-    //Event for clicking on the edit button
-    //Should change the state isEdit to true to render all the other card
+    //method for handling the event when the edit button is pushed
+    //it should render the card with input fields and an update button
+    //by changing the state of the card
     handleEdit = () => {
         this.setState({isEdit: true});
     }
 
+    //method for handling the event when the update button is pushed
     handleUpdate = () => {
         this.props.dispatch({type: 'UPDATE_KITTEN_INFO', payload: {id: this.props.id, newData: {name: this.state.newData.name, email: this.state.newData.email}}});
-        console.log('handleUpdate pressed!', this.props.id);
         this.setState({isEdit: false});
     }
 
-      //Handle changes to the fields and stores them into state before submitting
-  handleChangeFor = (event, propertyName) => {
-    this.setState({
-        newData: {...this.state.newData,[propertyName]: event.target.value,}
-      });
-  }
+    //Handle changes to the fields and stores them into state before submitting
+    handleChangeFor = (event, propertyName) => {
+        this.setState({
+            newData: {...this.state.newData,[propertyName]: event.target.value}
+        });
+    }
 
     render() {
         const {id, name, email} = this.props;
