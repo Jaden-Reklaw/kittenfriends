@@ -48,7 +48,22 @@ class CardItem extends Component {
 
     //method for handling the event when the update button is pushed
     handleUpdate = () => {
-        this.props.dispatch({type: 'UPDATE_KITTEN_INFO', payload: {id: this.props.id, newData: {name: this.state.newData.name, email: this.state.newData.email}}});
+        if(this.state.newData.name === this.props.name && this.state.newData.email === this.props.email) {
+            Swal.fire({
+                icon: 'info',
+                title: 'No Changes Made!',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        } else {
+            Swal.fire({
+                icon: 'success',
+                title: 'Successfully Updated Kitten!',
+                showConfirmButton: false,
+                timer: 1500
+            })
+            this.props.dispatch({type: 'UPDATE_KITTEN_INFO', payload: {id: this.props.id, newData: {name: this.state.newData.name, email: this.state.newData.email}}});
+        }
         this.setState({isEdit: false});
     }
 
