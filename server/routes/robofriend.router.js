@@ -11,7 +11,7 @@ const INTERNAL_SERVER_ERROR = 500;
 //Route for getting kittens from database
 router.get('/get', (req, res) => {
     // returns all kittens
-    const queryText = `SELECT * FROM  kittens ORDER BY name`;
+    const queryText = `SELECT * FROM  "kittens" ORDER BY "name"`;
     pool.query(queryText)
     .then( (result) => {
         res.send(result.rows);
