@@ -19,6 +19,9 @@ import {takeEvery, put} from 'redux-saga/effects';
 //Bring in Axios into the project
 import axios from 'axios';
 
+//Import the Root Reducer to had redux to index.js
+import rootReducer from './redux/reducers/index'
+
 
 //Create the rootSaga generator function
 function* rootSaga() {
@@ -30,16 +33,6 @@ function* rootSaga() {
 
 //Create sagaMiddleware
 const sagaMiddleware = createSagaMiddleware();
-
-//Used to store movies returned from the server
-const kittens = (state = [], action) => {
-    switch (action.type) {
-        case 'SET_KITTENS':
-            return action.payload;
-        default:
-            return state;
-    }
-}
 
 //Create Generator Funcitons for sagas
 //Generator function that uses saga to ajax get request
@@ -96,7 +89,7 @@ function* updateKittenSaga ( action ){
 // Create one store that all components can use
 const storeInstance = createStore(
     combineReducers({
-        kittens,
+        rootReducer,
     }),
     // Add sagaMiddleware to our store
     applyMiddleware(sagaMiddleware, logger),

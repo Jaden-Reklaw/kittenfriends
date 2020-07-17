@@ -78,7 +78,7 @@ class App extends Component {
 
 //Get redux store
 const mapStateToProps = reduxState => ({
-  kittens: reduxState.kittens
+  kittens: reduxState.rootReducer.kittens
 });
 
 export default connect(mapStateToProps)(App);
