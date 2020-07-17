@@ -25,26 +25,13 @@ import rootReducer from './redux/reducers/index'
 
 //Create the rootSaga generator function
 function* rootSaga() {
-    yield takeEvery('ADD_KITTEN', addKittensSaga);
+    
     yield takeEvery('DELETE_KITTEN', deleteKittenSaga);
     yield takeEvery('UPDATE_KITTEN_INFO', updateKittenSaga);
 }
 
 //Create sagaMiddleware
 const sagaMiddleware = createSagaMiddleware();
-
-//Saga for adding a kitten to the database
-function* addKittensSaga ( action ){
-    console.log('addKittenSaga', action.payload.newKitten);
-    try {
-        //Making async AJAX (axios) request
-        yield axios.post(`/api/kittens/add`, action.payload.newKitten);
-        //Redo the get saga to see changes after post
-        yield put({type: 'FETCH_KITTENS'});
-    } catch(error) {
-        console.log('error with kittens delete request', error);
-    }
-}
 
 //Saga for removing a kitten from the database
 function* deleteKittenSaga ( action ){
