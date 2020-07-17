@@ -25,7 +25,6 @@ import rootReducer from './redux/reducers/index'
 
 //Create the rootSaga generator function
 function* rootSaga() {
-    yield takeEvery('FETCH_KITTENS', fetchKittensSaga);
     yield takeEvery('ADD_KITTEN', addKittensSaga);
     yield takeEvery('DELETE_KITTEN', deleteKittenSaga);
     yield takeEvery('UPDATE_KITTEN_INFO', updateKittenSaga);
@@ -33,19 +32,6 @@ function* rootSaga() {
 
 //Create sagaMiddleware
 const sagaMiddleware = createSagaMiddleware();
-
-//Create Generator Funcitons for sagas
-//Generator function that uses saga to ajax get request
-function* fetchKittensSaga ( action ){
-    try {
-        //Making async AJAX (axios) request
-        const response = yield axios.get('/api/kittens/get');
-        //Once that is back successfully, dispatch action to the reducer
-        yield put({ type: 'SET_KITTENS', payload: response.data});
-    } catch(error) {
-        console.log('error with kittens get request', error);
-    }
-}
 
 //Saga for adding a kitten to the database
 function* addKittensSaga ( action ){
