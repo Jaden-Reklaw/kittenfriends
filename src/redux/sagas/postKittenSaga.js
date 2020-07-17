@@ -1,3 +1,6 @@
+import { put, takeLatest } from 'redux-saga/effects';
+import axios from 'axios';
+
 //Saga for adding a kitten to the database
 function* addKittenSaga ( action ){
     console.log('addKittensSaga', action.payload.newKitten);
@@ -12,7 +15,7 @@ function* addKittenSaga ( action ){
 }
 
 function* postKittenSaga() {
-    yield takeEvery('ADD_KITTEN', addKittenSaga);
+    yield takeLatest('ADD_KITTEN', addKittenSaga);
 }
 
 export default postKittenSaga;

@@ -60,6 +60,7 @@ router.put('/update/:id', (req, res) => {
     const kitten_id = req.params.id;
     const kitten_name = req.body.name;
     const kitten_email = req.body.email;
+    console.log(`ID: ${kitten_id} Name: ${kitten_name} Email: ${kitten_email}`);
 
     const queryText = `
                         UPDATE "kittens"

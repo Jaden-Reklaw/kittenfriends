@@ -15,7 +15,7 @@ function* fetchKittensSaga ( action ){
 }
 
 function* getKittenSaga() {
-    yield takeEvery('FETCH_KITTENS', fetchKittensSaga);
+    yield takeLatest('FETCH_KITTENS', fetchKittensSaga);
 }
 
 export default getKittenSaga;

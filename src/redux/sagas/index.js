@@ -4,11 +4,13 @@ import { all } from 'redux-saga/effects';
 import getKittenSaga from './getKittenSaga';
 import postKittenSaga from './postKittenSaga';
 import deleteKittenSaga from './deleteKittenSaga';
+import putKittenSaga from './putKittenSaga';
 
 export default function* rootSaga() {
   yield all([
     getKittenSaga(),
     postKittenSaga(),
     deleteKittenSaga(),
+    putKittenSaga(),
   ]);
 }

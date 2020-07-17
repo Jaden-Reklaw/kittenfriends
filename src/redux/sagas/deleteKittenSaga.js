@@ -1,5 +1,8 @@
+import { put, takeLatest } from 'redux-saga/effects';
+import axios from 'axios';
+
 //Saga for removing a kitten from the database
-function* deleteKittenSaga ( action ){
+function* removeKittenSaga ( action ){
     console.log('deleteKittenSaga id is', action.payload.id);
     try {
         //Making async AJAX (axios) request
@@ -12,7 +15,7 @@ function* deleteKittenSaga ( action ){
 }
 
 function* deleteKittenSaga() {
-    yield takeEvery('DELETE_KITTEN', deleteKittenSaga);
+    yield takeLatest('DELETE_KITTEN', removeKittenSaga);
 }
 
 export default deleteKittenSaga;
