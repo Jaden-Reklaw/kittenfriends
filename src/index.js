@@ -20,31 +20,23 @@ import {takeEvery, put} from 'redux-saga/effects';
 import axios from 'axios';
 
 //Import the Root Reducer to had redux to index.js
-import rootReducer from './redux/reducers/index'
+import rootReducer from './redux/reducers/index';
+
+//Import the Root Saga
+import rootSaga from './redux/sagas/index';
 
 
 //Create the rootSaga generator function
 function* rootSaga() {
     
-    yield takeEvery('DELETE_KITTEN', deleteKittenSaga);
+    
     yield takeEvery('UPDATE_KITTEN_INFO', updateKittenSaga);
 }
 
 //Create sagaMiddleware
 const sagaMiddleware = createSagaMiddleware();
 
-//Saga for removing a kitten from the database
-function* deleteKittenSaga ( action ){
-    console.log('deleteKittenSaga id is', action.payload.id);
-    try {
-        //Making async AJAX (axios) request
-        yield axios.delete(`/api/kittens/delete/${action.payload.id}`);
-        //Redo the get saga to see changes after delete
-        yield put({type: 'FETCH_KITTENS'});
-    } catch(error) {
-        console.log('error with kittens delete request', error);
-    }
-}
+
 
 //Saga for updating a kitten's info on the database
 function* updateKittenSaga ( action ){
